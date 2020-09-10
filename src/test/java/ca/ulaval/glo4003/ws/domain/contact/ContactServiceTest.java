@@ -51,6 +51,18 @@ public class ContactServiceTest {
   }
 
   @Test
+  public void givenContactsInRepository_whenFindContact_thenReturnThem() {
+    BDDMockito.given(contactRepository.findById(CONTACT_ID)).willReturn(contact);
+    BDDMockito.given(contactAssembler.create(contact)).willReturn(contactDto);
+
+    ContactDto contactDto = contactService.findContact(CONTACT_ID);
+
+    Truth.assertThat(contactDto).isEqualTo(this.contactDto);
+    Mockito.verify(contactRepository).findById(CONTACT_ID);
+    Mockito.verify(contactAssembler).create(eq(contact));
+  }
+
+  @Test
   public void whenAddContact_thenAddThem() {
     BDDMockito.given(contactAssembler.create(contactDto)).willReturn(contact);
 
