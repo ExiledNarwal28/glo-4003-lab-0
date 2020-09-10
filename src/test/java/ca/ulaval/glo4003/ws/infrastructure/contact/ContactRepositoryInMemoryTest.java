@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.ws.infrastructure.contact;
 
 import java.util.List;
 
+import ca.ulaval.glo4003.ws.domain.contact.ContactNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,8 @@ public class ContactRepositoryInMemoryTest {
 
   @Mock
   private Contact contact;
+  @Mock
+  private Contact updatedContact;
 
   private ContactRepositoryInMemory contactRepositoryInMemory;
 
@@ -27,18 +30,36 @@ public class ContactRepositoryInMemoryTest {
   public void setUp() {
     contactRepositoryInMemory = new ContactRepositoryInMemory();
     BDDMockito.given(contact.getId()).willReturn(CONTACT_ID);
+    BDDMockito.given(updatedContact.getId()).willReturn(CONTACT_ID);
   }
 
   @Test
-  public void givenContact_whenFindAll_ThenReturnContactInMemory() {
-    //given
+  public void givenContact_whenFindAll_thenReturnContactInMemory() {
     contactRepositoryInMemory.save(contact);
 
-    // when
     List<Contact> contacts = contactRepositoryInMemory.findAll();
 
-    // then
     Truth.assertThat(contacts).contains(contact);
   }
 
+  @Test
+  public void givenContact_whenUpdate_thenUpdateContactInMemory() throws ContactNotFoundException {
+    contactRepositoryInMemory.save(contact);
+    contactRepositoryInMemory.update(updatedContact);
+
+    List<Contact> contacts = contactRepositoryInMemory.findAll();
+
+    Truth.assertThat(contacts).contains(updatedContact);
+    Truth.assertThat(contacts).doesNotContain(contact);
+  }
+
+  @Test
+  public void givenContact_whenRemove_thenRemoveContactFromMemory() {
+    contactRepositoryInMemory.save(contact);
+    contactRepositoryInMemory.remove(contact.getId());
+
+    List<Contact> contacts = contactRepositoryInMemory.findAll();
+
+    Truth.assertThat(contacts).doesNotContain(contact);
+  }
 }
