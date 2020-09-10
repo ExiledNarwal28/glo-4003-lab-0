@@ -27,4 +27,8 @@ public class CallLog {
   public String getDate() {
     return date;
   }
+
+  public int getDurationInSeconds() {
+    return durationInSeconds;
+  }
 }

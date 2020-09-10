@@ -46,7 +46,6 @@ public class ContactService {
     contactRepository.update(contact);
   }
 
-
   public void deleteContact(String id) {
     logger.info(String.format("Delete contact with id %s", id));
     contactRepository.remove(id);
