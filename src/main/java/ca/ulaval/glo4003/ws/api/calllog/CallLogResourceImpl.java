@@ -1,5 +1,25 @@
 package ca.ulaval.glo4003.ws.api.calllog;
 
-public class CallLogResourceImpl {
-  // TODO something to do here!
+import ca.ulaval.glo4003.ws.api.calllog.dto.CallLogDto;
+import ca.ulaval.glo4003.ws.domain.calllog.CallLogService;
+
+import java.util.List;
+
+public class CallLogResourceImpl implements CallLogResource {
+
+  private CallLogService callLogService;
+
+  public CallLogResourceImpl(CallLogService callLogService) {
+    this.callLogService = callLogService;
+  }
+
+  @Override
+  public List<CallLogDto> getCallLogs() {
+    return callLogService.findAllCallLogs();
+  }
+
+  @Override
+  public void deleteCallLog(String id) {
+    callLogService.deleteCallLog(id);
+  }
 }
